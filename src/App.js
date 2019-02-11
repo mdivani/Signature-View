@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import SignatureCanvas from "./SignaturePad";
 import './App.css';
 
 class App extends Component {
+
+  state = {
+    pointGroup: [],
+  }
+
+  onSignatureChange = (sigCanvas) => {
+    if (sigCanvas) {
+      const pointGroup = sigCanvas.toData();
+      this.setState({pointGroup});
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state.pointGroup);
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <form className="App" onSubmit={this.handleSubmit}>
+        <div>
+          <h3>Sign Off here</h3>
+          <SignatureCanvas onChange={this.onSignatureChange} />
+        </div>
+        <button 
+          disabled={this.state.pointGroup.length === 0}
+          style={{
+            display: "inline-block", 
+            padding: ".5rem 1rem", 
+            marginTop: 5,
+            borderRadius: 3 }}>Complete</button>
+      </form>
     );
   }
 }
